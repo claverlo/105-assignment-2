@@ -15,19 +15,26 @@ $("#servicesForm").submit(function (event) {
     $("#serviceName").css("border", "3px solid red");
     isValid = false;
   }
+
   if (!description) {
     $("#serviceDescription").css("border", "3px solid red");
     isValid = false;
   }
+
   if (!price || price <= 0) {
     $("#servicePrice").css("border", "3px solid red");
     isValid = false;
-  } else {
- 
   }
 
   if (isValid) {
-    new Service(name, description, price);
+    let services = JSON.parse(localStorage.getItem("services")) || [];
+    services.push(new Service(name, description, price));
+    localStorage.setItem("services", JSON.stringify(services));
+
     this.reset();
+
+    $("#serviceName").css("border", "");
+    $("#serviceDescription").removeAttr("style");
+    $("#servicePrice").removeAttr("style");
   }
 });
